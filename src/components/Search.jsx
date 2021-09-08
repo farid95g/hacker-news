@@ -2,7 +2,10 @@ import React from 'react';
 
 const Search = ({ value, onChange, children }) => (
   <form>
-    {children}: <input type="text" value={value} onChange={onChange} />
+    <div>
+      <label>{children}:</label><br />
+      <input type="text" value={value} onChange={onChange} />
+    </div>
   </form>
 );
 

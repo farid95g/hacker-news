@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+table th, table td {
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, .75);
+}
+
+form > div {
+  width: 40%;
+  margin: 0 auto;
+}
+
+input {
+  width: 100%;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
