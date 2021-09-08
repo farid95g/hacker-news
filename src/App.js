@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Search from './components/Search';
 import Table from './components/Table';
+import Preloader from "./components/Preloader";
 
 const DEFAULT_QUERY = 'redux';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
@@ -19,29 +20,19 @@ class App extends Component {
       searchTerm: "",
       isFetching: false
     };
-
-    this.setSearchTopStories = this.setSearchTopStories.bind(this);
-    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
-    this.onSearchChange = this.onSearchChange.bind(this);
-    this.onSearchSubmit = this.onSearchSubmit.bind(this);
   }
 
-  setSearchTopStories(result) {
-    this.setState({ result });
-  }
+  setSearchTopStories = result => this.setState({ result });
 
-  onDismiss(id) {
+  onDismiss = id => {
     const isNotId = item => item.objectID !== id;
     const updatedList = this.state.result.hits.filter(isNotId);
     this.setState({ result: { ...this.state.result, hits: updatedList } });
   }
 
-  onSearchChange(ev) {
-    this.setState({ searchTerm: ev.target.value });
-  }
+  onSearchChange = e => this.setState({ searchTerm: e.target.value });
 
-  fetchSearchTopStories(searchTerm) {
+  fetchSearchTopStories = searchTerm => {
     this.setState({ isFetching: true, result: null });
     fetch(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
       .then(response => response.json())
@@ -52,7 +43,7 @@ class App extends Component {
       .catch(error => error);
   }
 
-  onSearchSubmit(e) {
+  onSearchSubmit = e => {
     const { searchTerm } = this.state;
     this.fetchSearchTopStories(searchTerm);
     this.setState({ searchTerm: "" });
@@ -75,11 +66,9 @@ class App extends Component {
         >
           Search by title
         </Search>
-        {this.state.isFetching &&
-          <div style={{ textAlign: "center" }}>
-            <img src="https://miro.medium.com/max/978/0*cWpsf9D3g346Va20.gif" alt="loading" />
-          </div>
-        }
+
+        { this.state.isFetching && <Preloader /> }
+        
         {result && 
             <Table 
               list={result.hits}
