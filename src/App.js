@@ -10,21 +10,21 @@ const PARAM_SEARCH = 'query=';
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 console.log(url);
 
-const isSearched = searchTerm => item =>
-  item.title.toLowerCase().includes(searchTerm.toLowerCase());
-
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       result: null,
-      searchTerm: DEFAULT_QUERY
+      searchTerm: "",
+      isFetching: false
     };
 
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
+    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
   }
 
   setSearchTopStories(result) {
@@ -41,13 +41,26 @@ class App extends Component {
     this.setState({ searchTerm: ev.target.value });
   }
 
-  componentDidMount() {
-    const { searchTerm } = this.state;
-
+  fetchSearchTopStories(searchTerm) {
+    this.setState({ isFetching: true, result: null });
     fetch(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
       .then(response => response.json())
-      .then(result => this.setSearchTopStories(result))
+      .then(result => {
+        this.setSearchTopStories(result);
+        this.setState({ isFetching: false });
+      })
       .catch(error => error);
+  }
+
+  onSearchSubmit(e) {
+    const { searchTerm } = this.state;
+    this.fetchSearchTopStories(searchTerm);
+    this.setState({ searchTerm: "" });
+    e.preventDefault();
+  }
+
+  componentDidMount() {
+    this.fetchSearchTopStories(DEFAULT_QUERY);
   }
 
   render() {
@@ -55,19 +68,23 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Search value={searchTerm} onChange={this.onSearchChange}>
+        <Search 
+          value={searchTerm}
+          onChange={this.onSearchChange} 
+          onSubmit={this.onSearchSubmit}
+        >
           Search by title
         </Search>
-        {result 
-          ? <Table 
+        {this.state.isFetching &&
+          <div style={{ textAlign: "center" }}>
+            <img src="https://miro.medium.com/max/978/0*cWpsf9D3g346Va20.gif" alt="loading" />
+          </div>
+        }
+        {result && 
+            <Table 
               list={result.hits}
-              pattern={searchTerm}
               onDismiss={this.onDismiss}
-              isSearched={isSearched}
-            />
-          : <div style={{ textAlign: "center" }}>
-              <img src="https://miro.medium.com/max/978/0*cWpsf9D3g346Va20.gif" alt="loading" />
-            </div>
+            /> 
         }
       </div>
     )

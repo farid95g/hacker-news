@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './Button';
 
-const Table = ({ list, pattern, onDismiss, isSearched }) => (
+const Table = ({ list, onDismiss }) => (
   <div style={{ marginTop: "30px" }}>
     <table>
       <thead>
@@ -14,7 +14,7 @@ const Table = ({ list, pattern, onDismiss, isSearched }) => (
         </tr>
       </thead>
       <tbody>
-        {list.filter(isSearched(pattern)).map(item =>
+        {list.map(item =>
           <tr key={item.objectID}>
             <td style={{ width: '20%' }}>
               <a href={item.url}>{item.title}</a>
