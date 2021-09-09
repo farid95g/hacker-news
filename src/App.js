@@ -3,9 +3,8 @@ import './App.css';
 import Search from './components/Search';
 import Table from './components/Table';
 import Preloader from "./components/Preloader";
-import Button from './components/Button';
 
-const DEFAULT_QUERY = 'redux';
+const DEFAULT_QUERY = 'react';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
@@ -17,27 +16,48 @@ class App extends Component {
     super(props);
 
     this.state = {
-      result: null,
+      results: null,
+      searchKey: "",
       searchTerm: "",
       isFetching: false
     };
   }
 
+  needsToSearchTopStories = searchTerm => {
+    return !this.state.results[searchTerm];
+  }
+
   setSearchTopStories = result => {
     const { hits, page } = result;
+    const { searchKey, results } = this.state;
 
-    const oldHits = page !== 0 ? this.state.result.hits : [];
+    const oldHits = results && results[searchKey]
+      ? results[searchKey].hits
+      : [];
+
     const updatedHits = [ ...oldHits,  ...hits ];
     
     this.setState({
-      result: { hits: updatedHits, page }
+      results: { 
+        ...results,
+        [searchKey]: { hits: updatedHits, page }
+      }
     });
   }
 
   onDismiss = id => {
+    const { searchKey, results } = this.state;
+    const { hits, page } = results[searchKey];
+
     const isNotId = item => item.objectID !== id;
-    const updatedList = this.state.result.hits.filter(isNotId);
-    this.setState({ result: { ...this.state.result, hits: updatedList } });
+    const updatedHits = hits.filter(isNotId);
+
+    this.setState({ 
+      results: { 
+        ...results,
+        [searchKey]: { hits: updatedHits, page }
+      }
+    });
   }
 
   onSearchChange = e => this.setState({ searchTerm: e.target.value });
@@ -56,18 +76,40 @@ class App extends Component {
 
   onSearchSubmit = e => {
     const { searchTerm } = this.state;
-    this.fetchSearchTopStories(searchTerm);
+    this.setState({ searchKey: searchTerm });
+
+    if (this.needsToSearchTopStories(searchTerm)) {
+      this.fetchSearchTopStories(searchTerm);
+    }
+    
     this.setState({ searchTerm: "" });
     e.preventDefault();
   }
 
   componentDidMount() {
+    this.setState({ searchKey: DEFAULT_QUERY });
     this.fetchSearchTopStories(DEFAULT_QUERY);
   }
 
   render() {
-    const { searchTerm, result } = this.state;
-    const page = (result && result.page) || 0;
+    const { 
+      searchTerm, 
+      results,
+      searchKey
+    } = this.state;
+
+    const page = (
+      results && 
+      results[searchKey] &&
+      results[searchKey].page
+    ) || 0;
+
+    const list = (
+      results &&
+      results[searchKey] &&
+      results[searchKey].hits
+    ) || [];
+
     const currentSearchTerm = searchTerm ? searchTerm : DEFAULT_QUERY;
 
     return (
@@ -82,13 +124,13 @@ class App extends Component {
 
         { this.state.isFetching && <Preloader /> }
         
-        {result && 
+        {results && 
             <Table 
-              list={result.hits}
+              list={list}
               onDismiss={this.onDismiss}
               isFetching={this.state.isFetching}
               fetchStories={this.fetchSearchTopStories}
-              currentSearchTerm={currentSearchTerm}
+              currentSearchTerm={searchKey}
               page={page}
             />
         }
