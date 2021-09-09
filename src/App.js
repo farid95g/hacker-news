@@ -3,13 +3,14 @@ import './App.css';
 import Search from './components/Search';
 import Table from './components/Table';
 import Preloader from "./components/Preloader";
+import Button from './components/Button';
 
 const DEFAULT_QUERY = 'redux';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
-const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
-console.log(url);
+const PARAM_HPP = "hitsPerPage=10";
+const PARAM_PAGE = "page=";
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +23,16 @@ class App extends Component {
     };
   }
 
-  setSearchTopStories = result => this.setState({ result });
+  setSearchTopStories = result => {
+    const { hits, page } = result;
+
+    const oldHits = page !== 0 ? this.state.result.hits : [];
+    const updatedHits = [ ...oldHits,  ...hits ];
+    
+    this.setState({
+      result: { hits: updatedHits, page }
+    });
+  }
 
   onDismiss = id => {
     const isNotId = item => item.objectID !== id;
@@ -32,13 +42,14 @@ class App extends Component {
 
   onSearchChange = e => this.setState({ searchTerm: e.target.value });
 
-  fetchSearchTopStories = searchTerm => {
-    this.setState({ isFetching: true, result: null });
-    fetch(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  fetchSearchTopStories = (searchTerm, page = 0) => {
+    this.setState({ isFetching: true });
+    fetch(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_HPP}&${PARAM_PAGE}${page}`)
       .then(response => response.json())
       .then(result => {
         this.setSearchTopStories(result);
         this.setState({ isFetching: false });
+        console.log(result)
       })
       .catch(error => error);
   }
@@ -56,6 +67,8 @@ class App extends Component {
 
   render() {
     const { searchTerm, result } = this.state;
+    const page = (result && result.page) || 0;
+    const currentSearchTerm = searchTerm ? searchTerm : DEFAULT_QUERY;
 
     return (
       <div className="App">
@@ -73,7 +86,11 @@ class App extends Component {
             <Table 
               list={result.hits}
               onDismiss={this.onDismiss}
-            /> 
+              isFetching={this.state.isFetching}
+              fetchStories={this.fetchSearchTopStories}
+              currentSearchTerm={currentSearchTerm}
+              page={page}
+            />
         }
       </div>
     )

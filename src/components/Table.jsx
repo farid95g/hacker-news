@@ -1,8 +1,15 @@
 import React from 'react';
 import Button from './Button';
 
-const Table = ({ list, onDismiss }) => (
-  <div style={{ marginTop: "30px" }}>
+const Table = ({ 
+  list, 
+  onDismiss, 
+  isFetching, 
+  fetchStories, 
+  currentSearchTerm, 
+  page 
+}) => (
+  <div style={{ marginTop: "30px", transition: isFetching ? "" : "transform .3s", transform: isFetching ? "scale(0)" : "scale(1)" }}>
     <table>
       <thead>
         <tr>
@@ -14,7 +21,7 @@ const Table = ({ list, onDismiss }) => (
         </tr>
       </thead>
       <tbody>
-        {list.map(item =>
+        {list.slice(-10).map(item =>
           <tr key={item.objectID}>
             <td style={{ width: '20%' }}>
               <a href={item.url}>{item.title}</a>
@@ -31,6 +38,12 @@ const Table = ({ list, onDismiss }) => (
         )}
       </tbody>
     </table>
+
+    <Button
+      onClick={() => fetchStories(currentSearchTerm, page + 1)}
+    >
+      More Stories
+    </Button>
   </div>
 );
 
