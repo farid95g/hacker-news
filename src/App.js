@@ -3,6 +3,7 @@ import './App.css';
 import Search from './components/Search';
 import Table from './components/Table';
 import Preloader from "./components/Preloader";
+import axios from "axios";
 
 const DEFAULT_QUERY = 'react';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
@@ -12,6 +13,8 @@ const PARAM_HPP = "hitsPerPage=10";
 const PARAM_PAGE = "page=";
 
 class App extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -65,14 +68,12 @@ class App extends Component {
 
   fetchSearchTopStories = (searchTerm, page = 0) => {
     this.setState({ isFetching: true });
-    fetch(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_HPP}&${PARAM_PAGE}${page}`)
-      .then(response => response.json())
+    axios(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_HPP}&${PARAM_PAGE}${page}`)
       .then(result => {
-        this.setSearchTopStories(result);
-        this.setState({ isFetching: false });
-        console.log(result)
+        this._isMounted && this.setSearchTopStories(result.data);
+        this._isMounted && this.setState({ isFetching: false });
       })
-      .catch(error => this.setState({ error, isFetching: false }));
+      .catch(error => this._isMounted && this.setState({ error, isFetching: false }));
   }
 
   onSearchSubmit = e => {
@@ -88,8 +89,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.setState({ searchKey: DEFAULT_QUERY });
     this.fetchSearchTopStories(DEFAULT_QUERY);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
