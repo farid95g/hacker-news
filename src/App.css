@@ -25,6 +25,7 @@ input {
   outline: none;
   margin-right: 10px;
   border: 1px solid #dddddd;
+  width: 100%;
 }
 
 button {

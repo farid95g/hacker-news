@@ -19,7 +19,8 @@ class App extends Component {
       results: null,
       searchKey: "",
       searchTerm: "",
-      isFetching: false
+      isFetching: false,
+      error: null
     };
   }
 
@@ -71,7 +72,7 @@ class App extends Component {
         this.setState({ isFetching: false });
         console.log(result)
       })
-      .catch(error => error);
+      .catch(error => this.setState({ error, isFetching: false }));
   }
 
   onSearchSubmit = e => {
@@ -95,7 +96,8 @@ class App extends Component {
     const { 
       searchTerm, 
       results,
-      searchKey
+      searchKey,
+      error
     } = this.state;
 
     const page = (
@@ -133,6 +135,10 @@ class App extends Component {
               currentSearchTerm={searchKey}
               page={page}
             />
+        }
+
+        {error &&
+          <p style={{ textAlign: "center" }}>Sorry, something went wrong!</p>
         }
       </div>
     )

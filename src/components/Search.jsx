@@ -1,16 +1,18 @@
 import React from 'react';
 
-const Search = ({ 
-  value, 
-  onChange, 
-  children, 
-  onSubmit 
+const Search = ({
+  value,
+  onChange,
+  children,
+  onSubmit
 }) => (
   <form onSubmit={onSubmit}>
     <div>
       <label>{children}:</label><br />
-      <input type="text" value={value} onChange={onChange} />
-      <button type="submit">Search</button>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <input type="text" value={value} onChange={onChange} />
+        <button type="submit">Search</button>
+      </div>
     </div>
   </form>
 );
