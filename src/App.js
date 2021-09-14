@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
-import './App.css';
-import Search from './components/Search';
-import Table from './components/Table';
-import Preloader from "./components/Preloader";
+import React, { Component } from "react";
+import "./App.css";
 import axios from "axios";
+import {
+  DEFAULT_QUERY,
+  PATH_BASE,
+  PATH_SEARCH,
+  PARAM_SEARCH,
+  PARAM_HPP,
+  PARAM_PAGE
+} from "./constants";
+import Search from "./components/Search";
+import Table from "./components/Table";
+import Preloader from "./components/Preloader";
 
-const DEFAULT_QUERY = 'react';
-const PATH_BASE = 'https://hn.algolia.com/api/v1';
-const PATH_SEARCH = '/search';
-const PARAM_SEARCH = 'query=';
-const PARAM_HPP = "hitsPerPage=10";
-const PARAM_PAGE = "page=";
 
 class App extends Component {
   _isMounted = false;
