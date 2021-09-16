@@ -12,6 +12,7 @@ import {
 import Search from "./components/Search";
 import Table from "./components/Table";
 import Preloader from "./components/Preloader";
+import Button  from "./components/Button";
 
 
 class App extends Component {
@@ -154,3 +155,9 @@ class App extends Component {
 }
 
 export default App;
+
+export {
+  Button,
+  Search,
+  Table
+};

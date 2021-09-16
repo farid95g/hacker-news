@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./../Button";
+import PropTypes from "prop-types";
 
 const Table = ({ 
   list, 
@@ -46,5 +47,14 @@ const Table = ({
     </Button>
   </div>
 );
+
+Table.propTypes = {
+  list: PropTypes.array.isRequired,
+  onDismiss: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
+  fetchStories: PropTypes.func,
+  currentSearchTerm: PropTypes.string,
+  page: PropTypes.number
+}
 
 export default Table;
