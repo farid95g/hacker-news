@@ -13,7 +13,15 @@ import Search from "./components/Search";
 import Table from "./components/Table";
 import Preloader from "./components/Preloader";
 import Button  from "./components/Button";
+import { sortBy } from 'lodash';
 
+const SORTS = {
+  NONE: list => list,
+  TITLE: list => sortBy(list, 'title'),
+  AUTHOR: list => sortBy(list, 'author'),
+  COMMENTS: list => sortBy(list, 'num_comments').reverse(),
+  POINTS: list => sortBy(list, 'points').reverse(),
+};
 
 class App extends Component {
   _isMounted = false;
@@ -26,7 +34,9 @@ class App extends Component {
       searchKey: "",
       searchTerm: "",
       isFetching: false,
-      error: null
+      error: null,
+      sortKey: 'NONE',
+      isSortReverse: false
     };
   }
 
@@ -48,7 +58,8 @@ class App extends Component {
       results: { 
         ...results,
         [searchKey]: { hits: updatedHits, page }
-      }
+      },
+      isFetching: false
     });
   }
 
@@ -74,7 +85,6 @@ class App extends Component {
     axios(`${PATH_BASE}/${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_HPP}&${PARAM_PAGE}${page}`)
       .then(result => {
         this._isMounted && this.setSearchTopStories(result.data);
-        this._isMounted && this.setState({ isFetching: false });
       })
       .catch(error => this._isMounted && this.setState({ error, isFetching: false }));
   }
@@ -91,6 +101,11 @@ class App extends Component {
     e.preventDefault();
   }
 
+  onSort = (sortKey) => {
+    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
+    this.setState({ sortKey, isSortReverse });
+  };
+
   componentDidMount() {
     this._isMounted = true;
     this.setState({ searchKey: DEFAULT_QUERY });
@@ -106,7 +121,9 @@ class App extends Component {
       searchTerm, 
       results,
       searchKey,
-      error
+      error,
+      sortKey,
+      isSortReverse
     } = this.state;
 
     const page = (
@@ -143,6 +160,10 @@ class App extends Component {
               fetchStories={this.fetchSearchTopStories}
               currentSearchTerm={searchKey}
               page={page}
+              sortKey={sortKey}
+              onSort={this.onSort}
+              sorts={SORTS}
+              isSortReverse={isSortReverse}
             />
         }
 
