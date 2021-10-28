@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/hacker-news/static/css/main.3e44707c.chunk.css",
-    "main.js": "/hacker-news/static/js/main.b8b1e737.chunk.js",
-    "main.js.map": "/hacker-news/static/js/main.b8b1e737.chunk.js.map",
-    "runtime-main.js": "/hacker-news/static/js/runtime-main.c1b04d12.js",
-    "runtime-main.js.map": "/hacker-news/static/js/runtime-main.c1b04d12.js.map",
-    "static/js/2.116c21c2.chunk.js": "/hacker-news/static/js/2.116c21c2.chunk.js",
-    "static/js/2.116c21c2.chunk.js.map": "/hacker-news/static/js/2.116c21c2.chunk.js.map",
-    "static/js/3.9dd1e302.chunk.js": "/hacker-news/static/js/3.9dd1e302.chunk.js",
-    "static/js/3.9dd1e302.chunk.js.map": "/hacker-news/static/js/3.9dd1e302.chunk.js.map",
+    "main.js": "/hacker-news/static/js/main.e6eac496.chunk.js",
+    "main.js.map": "/hacker-news/static/js/main.e6eac496.chunk.js.map",
+    "runtime-main.js": "/hacker-news/static/js/runtime-main.fefe2b19.js",
+    "runtime-main.js.map": "/hacker-news/static/js/runtime-main.fefe2b19.js.map",
+    "static/js/2.24c7cf5b.chunk.js": "/hacker-news/static/js/2.24c7cf5b.chunk.js",
+    "static/js/2.24c7cf5b.chunk.js.map": "/hacker-news/static/js/2.24c7cf5b.chunk.js.map",
+    "static/js/3.899a3fe5.chunk.js": "/hacker-news/static/js/3.899a3fe5.chunk.js",
+    "static/js/3.899a3fe5.chunk.js.map": "/hacker-news/static/js/3.899a3fe5.chunk.js.map",
     "index.html": "/hacker-news/index.html",
     "static/css/main.3e44707c.chunk.css.map": "/hacker-news/static/css/main.3e44707c.chunk.css.map",
-    "static/js/2.116c21c2.chunk.js.LICENSE.txt": "/hacker-news/static/js/2.116c21c2.chunk.js.LICENSE.txt"
+    "static/js/2.24c7cf5b.chunk.js.LICENSE.txt": "/hacker-news/static/js/2.24c7cf5b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.c1b04d12.js",
-    "static/js/2.116c21c2.chunk.js",
+    "static/js/runtime-main.fefe2b19.js",
+    "static/js/2.24c7cf5b.chunk.js",
     "static/css/main.3e44707c.chunk.css",
-    "static/js/main.b8b1e737.chunk.js"
+    "static/js/main.e6eac496.chunk.js"
   ]
 }
