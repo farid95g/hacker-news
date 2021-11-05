@@ -29,6 +29,7 @@ const Table = ({
               <Sort
                 sortKey={'TITLE'}
                 onSort={onSort}
+                activeSortKey={sortKey}
               >
                 Заголовок
               </Sort>
@@ -37,6 +38,7 @@ const Table = ({
               <Sort
                 sortKey={'AUTHOR'}
                 onSort={onSort}
+                activeSortKey={sortKey}
               >
                 Автор
               </Sort>
@@ -45,6 +47,7 @@ const Table = ({
               <Sort
                 sortKey={'COMMENTS'}
                 onSort={onSort}
+                activeSortKey={sortKey}
               >
                 Комментарии
               </Sort>
@@ -53,6 +56,7 @@ const Table = ({
               <Sort
                 sortKey={'POINTS'}
                 onSort={onSort}
+                activeSortKey={sortKey}
               >
                 Очки
               </Sort>
