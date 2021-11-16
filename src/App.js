@@ -34,9 +34,7 @@ class App extends Component {
       searchKey: "",
       searchTerm: "",
       isFetching: false,
-      error: null,
-      sortKey: 'NONE',
-      isSortReverse: false
+      error: null
     };
   }
 
@@ -101,11 +99,6 @@ class App extends Component {
     e.preventDefault();
   }
 
-  onSort = (sortKey) => {
-    const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
-    this.setState({ sortKey, isSortReverse });
-  };
-
   componentDidMount() {
     this._isMounted = true;
     this.setState({ searchKey: DEFAULT_QUERY });
@@ -121,9 +114,7 @@ class App extends Component {
       searchTerm, 
       results,
       searchKey,
-      error,
-      sortKey,
-      isSortReverse
+      error
     } = this.state;
 
     const page = (
@@ -160,10 +151,8 @@ class App extends Component {
               fetchStories={this.fetchSearchTopStories}
               currentSearchTerm={searchKey}
               page={page}
-              sortKey={sortKey}
               onSort={this.onSort}
               sorts={SORTS}
-              isSortReverse={isSortReverse}
             />
         }
 
